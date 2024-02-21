@@ -22,3 +22,31 @@ args = parser.parse_args()
 if args.l:
     print(" ".join(cowsay.list_cows()))
     exit(0)
+
+preset = None
+if args.b:
+    preset = "b"
+if args.d:
+    preset = "d"
+if args.g:
+    preset = "g"
+if args.p:
+    preset = "p"
+if args.s:
+    preset = "s"
+if args.t:
+    preset = "t"
+if args.w:
+    preset = "w"
+if args.y:
+    preset = "y"
+
+cow = "default"
+cowfile = args.cowfile
+if args.cowfile in cowsay.list_cows():
+    cow = args.cowfile
+    args.cowfile = None
+
+msg = "\n".join(sys.stdin.readlines())
+
+print(cowsay.cowsay(msg, cow=cow, preset=preset, eyes=args.eye_string, tongue=args.tongue_string, width=args.column, wrap_text=args.n, cowfile=args.cowfile))
