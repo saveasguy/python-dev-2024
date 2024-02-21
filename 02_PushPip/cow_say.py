@@ -18,3 +18,7 @@ parser.add_argument("-t", action="store_true")
 parser.add_argument("-w", action="store_true")
 parser.add_argument("-y", action="store_true")
 args = parser.parse_args()
+
+if args.l:
+    print(" ".join(cowsay.list_cows()))
+    exit(0)
