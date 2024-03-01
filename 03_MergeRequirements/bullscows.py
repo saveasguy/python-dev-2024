@@ -20,9 +20,10 @@ def gameplay(ask: callable, inform: callable, words: list[str]) -> int:
     secret = random.choice(words)
     bulls = 0
     tries = 0
+    cowfile = cowsay.get_cow("flying", f"{pathlib.Path(__name__).parent}")
     while bulls != len(secret):
         guess = ask(
-            cowsay.cowsay("Введите слово: ", cow=cowsay.get_random_cow())
+            cowsay.cowsay("Введите слово: ", cowfile=cowfile)
             + "\n",
             words,
         )
