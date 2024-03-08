@@ -2,7 +2,9 @@ import argparse
 import pathlib
 from typing import Tuple
 import urllib.request
+import cowsay
 import random
+
 
 def bullscows(guess: str, secret: str) -> Tuple[int, int]:
     bulls, cows = 0, 0
@@ -13,28 +15,36 @@ def bullscows(guess: str, secret: str) -> Tuple[int, int]:
             cows += 1
     return (bulls, cows)
 
+
 def gameplay(ask: callable, inform: callable, words: list[str]) -> int:
-    secret = words[random.randint(0, len(words))]
+    secret = random.choice(words)
     bulls = 0
     tries = 0
-    print(secret)
+    cowfile = cowsay.get_cow("flying", f"{pathlib.Path(__name__).parent}")
     while bulls != len(secret):
-        guess = ask("Введите слово: ", words)
+        guess = ask(
+            cowsay.cowsay("Введите слово: ", cowfile=cowfile)
+            + "\n",
+            words,
+        )
         tries += 1
         bulls, cows = bullscows(guess, secret)
         inform("Быки: {}, Коровы: {}", bulls, cows)
     print(tries)
 
+
 def _ask_impl(prompt: str, valid: list[str] = None) -> str:
     valid_guess = False
     while not valid_guess:
         print(prompt, end="")
-        guess = input()
+        guess = input().strip()
         valid_guess = not valid or guess in valid
     return guess
 
+
 def _inform_impl(format_string: str, bulls: int, cows: int) -> None:
     print(format_string.format(bulls, cows))
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("bullscows")
